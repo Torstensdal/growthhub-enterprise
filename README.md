@@ -1,3 +1,4 @@
+Build: Latest update
 # GrowthHub Vækstportal - Installation
 
 ## Sådan installerer du filerne:
