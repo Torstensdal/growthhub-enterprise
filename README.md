@@ -1,3 +1,4 @@
+Last update: Fix formatters
 Build: Latest update
 # GrowthHub Vækstportal - Installation
 
