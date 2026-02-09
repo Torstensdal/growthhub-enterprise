@@ -3,6 +3,8 @@ import CalendarScreen from './components/CalendarScreen';
 import ProspectingScreen from './components/ProspectingScreen';
 import SocialMediaScreen from './components/SocialMediaScreen';
 import PartnerPortalScreen from './components/PartnerPortalScreen';
+import ReportsScreen from './components/ReportsScreen';
+import RoadmapScreen from './components/RoadmapScreen';
 
 type View = 'calendar' | 'prospecting' | 'social' | 'partners' | 'reports' | 'roadmap';
 
@@ -20,19 +22,9 @@ function App() {
       case 'social':
         return <SocialMediaScreen />;
       case 'reports':
-        return (
-          <div className="p-8">
-            <h1 className="text-2xl font-bold">Rapporter</h1>
-            <p>Kommer snart...</p>
-          </div>
-        );
+        return <ReportsScreen />;
       case 'roadmap':
-        return (
-          <div className="p-8">
-            <h1 className="text-2xl font-bold">Roadmap</h1>
-            <p>Kommer snart...</p>
-          </div>
-        );
+        return <RoadmapScreen />;
       default:
         return <CalendarScreen />;
     }
