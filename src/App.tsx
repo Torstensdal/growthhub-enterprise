@@ -1,31 +1,13 @@
 import { useState } from 'react';
-import type { ViewType } from './types';
 import CalendarScreen from './components/CalendarScreen';
 import ProspectingScreen from './components/ProspectingScreen';
 import SocialMediaScreen from './components/SocialMediaScreen';
 import PartnerPortalScreen from './components/PartnerPortalScreen';
 
-// Components will be imported as we create them
-// import CalendarScreen from './components/CalendarScreen';
-// import ProspectingScreen from './components/ProspectingScreen';
-// import PartnerPortalScreen from './components/PartnerPortalScreen';
-// import ReportScreen from './components/ReportScreen';
-// import SaaSRoadmap from './components/SaaSRoadmap';
+type View = 'calendar' | 'prospecting' | 'social' | 'partners' | 'reports' | 'roadmap';
 
 function App() {
-  const [currentView, setCurrentView] = useState<ViewType>('calendar');
-  
-  // App state will be managed here later
-  // const [appState, setAppState] = useState<AppState>({...});
-
-  const navigationItems = [
-    { id: 'calendar', label: 'Kalender', icon: '📅' },
-    { id: 'prospecting', label: 'Prospektering', icon: '🎯' },
-    { id: 'social', label: 'Social Media', icon: '📱' },
-    { id: 'partners', label: 'Partner Portal', icon: '🤝' },
-    { id: 'reports', label: 'Rapporter', icon: '📊' },
-    { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
-  ] as const;
+  const [currentView, setCurrentView] = useState<View>('calendar');
 
   const renderView = () => {
     switch (currentView) {
@@ -33,112 +15,96 @@ function App() {
         return <CalendarScreen />;
       case 'prospecting':
         return <ProspectingScreen />;
-      case 'social':
-        return <SocialMediaScreen />;
       case 'partners':
         return <PartnerPortalScreen />;
       case 'social':
-        return (
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Social Media</h2>
-            <p className="text-gray-600">Social media view kommer her...</p>
-          </div>
-        );
-      case 'partners':
-        return (
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Partner Portal</h2>
-            <p className="text-gray-600">Partner portal kommer her...</p>
-          </div>
-        );
+        return <SocialMediaScreen />;
       case 'reports':
         return (
           <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Rapporter</h2>
-            <p className="text-gray-600">Rapport view kommer her...</p>
+            <h1 className="text-2xl font-bold">Rapporter</h1>
+            <p>Kommer snart...</p>
           </div>
         );
       case 'roadmap':
         return (
           <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Produkt Roadmap</h2>
-            <p className="text-gray-600">Roadmap kommer her...</p>
+            <h1 className="text-2xl font-bold">Roadmap</h1>
+            <p>Kommer snart...</p>
           </div>
         );
       default:
-        return (
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Velkommen</h2>
-            <p className="text-gray-600">Vælg en menu option...</p>
-          </div>
-        );
+        return <CalendarScreen />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-gradient-to-b from-purple-900 to-blue-900 text-white p-6 flex flex-col">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold mb-2">GrowthHub</h1>
-          <p className="text-sm text-purple-200">Enterprise Portal</p>
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="w-64 bg-gradient-to-b from-purple-600 to-blue-600 text-white flex flex-col">
+        <div className="p-6">
+          <h1 className="text-xl font-bold">GrowthHub Enterprise Portal</h1>
         </div>
-
-        <nav className="flex-1">
-          <ul className="space-y-2">
-            {navigationItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3 ${
-                    currentView === item.id
-                      ? 'bg-white bg-opacity-20 font-semibold'
-                      : 'hover:bg-white hover:bg-opacity-10'
-                  }`}
-                >
-                  <span className="text-xl">{item.icon}</span>
-                  <span>{item.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+        
+        <nav className="flex-1 px-4">
+          {[
+            { id: 'calendar', label: 'Kalender', icon: '📅' },
+            { id: 'prospecting', label: 'Prospektering', icon: '🎯' },
+            { id: 'social', label: 'Social Media', icon: '📱' },
+            { id: 'partners', label: 'Partner Portal', icon: '🤝' },
+            { id: 'reports', label: 'Rapporter', icon: '📊' },
+            { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id as View)}
+              className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-colors ${
+                currentView === item.id
+                  ? 'bg-white/20 font-semibold'
+                  : 'hover:bg-white/10'
+              }`}
+            >
+              <span className="mr-3">{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
         </nav>
 
-        <div className="pt-6 border-t border-white border-opacity-20">
-          <div className="flex items-center gap-3 px-4 py-3">
-            <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-lg">
+        <div className="p-4 border-t border-white/20">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
               👤
             </div>
             <div>
-              <p className="text-sm font-semibold">Admin User</p>
-              <p className="text-xs text-purple-200">admin@growthhub.com</p>
+              <p className="font-semibold">Admin User</p>
+              <p className="text-sm text-white/70">admin@growthhub.dk</p>
             </div>
           </div>
         </div>
-      </aside>
+      </div>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <header className="bg-white shadow-sm border-b border-gray-200 px-8 py-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {navigationItems.find(item => item.id === currentView)?.label || 'Dashboard'}
-            </h2>
-            <div className="flex items-center gap-4">
-              <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
-                🔔 Notifikationer
-              </button>
-              <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
-                ⚙️ Indstillinger
-              </button>
-            </div>
+      <div className="flex-1 flex flex-col">
+        {/* Top Bar */}
+        <div className="bg-white border-b px-8 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-800">
+            {currentView.charAt(0).toUpperCase() + currentView.slice(1)}
+          </h2>
+          <div className="flex items-center gap-4">
+            <button className="px-4 py-2 text-gray-600 hover:text-gray-800">
+              🔔 Notifikationer
+            </button>
+            <button className="px-4 py-2 text-gray-600 hover:text-gray-800">
+              ⚙️ Indstillinger
+            </button>
           </div>
-        </header>
+        </div>
 
-        <div className="p-0">
+        {/* View Content */}
+        <div className="flex-1 overflow-auto">
           {renderView()}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
