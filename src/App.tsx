@@ -10,18 +10,9 @@ import type { ViewType, AppState } from './types';
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('calendar');
-  const [appState, setAppState] = useState<AppState>({
-    currentView: 'calendar',
-    contacts: [],
-    campaigns: [],
-    events: [],
-    prospects: [],
-    proposals: [],
-    partners: [],
-    socialPosts: [],
-    stories: [],
-    roadmapItems: [],
-  });
+  
+  // App state will be managed here later
+  // const [appState, setAppState] = useState<AppState>({...});
 
   const navigationItems = [
     { id: 'calendar', label: 'Kalender', icon: '📅' },
