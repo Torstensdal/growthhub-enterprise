@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { CalendarEvent } from '../types';
-import { formatDate } from '../utils/dateUtils';
 
 interface CalendarScreenProps {
   onNavigate: (screen: string) => void;
 }
 
-export const CalendarScreen: React.FC<CalendarScreenProps> = ({ onNavigate }) => {
+export const CalendarScreen: React.FC<CalendarScreenProps> = () => {
   const [currentDate] = useState(new Date());
 
   // Mock calendar events with correct string format
