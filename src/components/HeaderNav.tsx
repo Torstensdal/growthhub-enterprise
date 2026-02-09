@@ -8,7 +8,7 @@ interface HeaderNavProps {
 }
 
 const HeaderNav: React.FC<HeaderNavProps> = ({ activeWorkspace, onWorkspaceChange }) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [showNotifications, setShowNotifications] = useState(false);
 

@@ -149,7 +149,7 @@ export const removeFileExtension = (filename: string): string => {
   return lastDotIndex > 0 ? filename.substring(0, lastDotIndex) : filename;
 };
 
-export const createDownloadUrl = (data: Blob, filename: string): string => {
+export const createDownloadUrl = (data: Blob): string => {
   return URL.createObjectURL(data);
 };
 

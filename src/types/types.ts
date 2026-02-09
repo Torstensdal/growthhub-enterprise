@@ -145,8 +145,8 @@ export interface SocialPost {
   platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram';
   content: string;
   mediaUrls?: string[];
-  scheduledFor?: Date;
-  publishedAt?: Date;
+  scheduledFor?: Date | string;
+  publishedAt?: Date | string;
   status: 'draft' | 'scheduled' | 'published' | 'failed';
   engagement?: {
     likes: number;
@@ -155,7 +155,7 @@ export interface SocialPost {
     views: number;
   };
   hashtags?: string[];
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 export interface MediaAsset {
@@ -179,9 +179,9 @@ export interface CalendarEvent {
   companyId: string;
   title: string;
   description?: string;
-  startDate: Date;
-  endDate: Date;
-  type: 'social-post' | 'campaign' | 'meeting' | 'deadline' | 'other';
+  startDate: Date | string;
+  endDate: Date | string;
+  type: 'social-post' | 'campaign' | 'meeting' | 'deadline' | 'other' | 'call' | 'task' | 'follow-up';
   relatedId?: string; // ID of related entity (post, campaign, etc.)
   completed?: boolean;
   reminders?: Date[];
@@ -244,6 +244,9 @@ export interface Report {
 export type Language = 'en' | 'da' | 'de';
 export type Theme = 'light' | 'dark' | 'auto';
 export type UserRole = 'admin' | 'user' | 'viewer';
+
+// Re-export for convenience
+export type { Language as Lang };
 
 // API Response Types
 export interface ApiResponse<T> {

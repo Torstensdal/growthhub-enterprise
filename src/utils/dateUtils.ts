@@ -102,6 +102,14 @@ export const isThisMonth = (date: Date | string): boolean => {
   return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
 };
 
+export const isSameDay = (date1: Date | string, date2: Date | string): boolean => {
+  const d1 = typeof date1 === 'string' ? new Date(date1) : date1;
+  const d2 = typeof date2 === 'string' ? new Date(date2) : date2;
+  return d1.getFullYear() === d2.getFullYear() &&
+         d1.getMonth() === d2.getMonth() &&
+         d1.getDate() === d2.getDate();
+};
+
 export const isPast = (date: Date | string): boolean => {
   const d = typeof date === 'string' ? new Date(date) : date;
   return d < new Date();

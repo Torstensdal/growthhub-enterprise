@@ -258,7 +258,6 @@ export const createFileFromBlob = (blob: Blob, filename: string): File => {
 };
 
 export const mergeFiles = async (files: File[]): Promise<Blob> => {
-  const dataUrls = await Promise.all(files.map(readFileAsDataURL));
   // This is a simplified merge - actual implementation would depend on file types
   return new Blob(files, { type: files[0]?.type || 'application/octet-stream' });
 };

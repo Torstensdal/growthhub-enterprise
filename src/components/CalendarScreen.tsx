@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { 
-  formatDate, 
   formatTime, 
   formatCalendarDate,
   getDaysInMonth,
   startOfMonth,
-  addDays,
   isToday,
   isSameDay
 } from '../utils/dateUtils';
@@ -20,14 +18,13 @@ interface CalendarDay {
 }
 
 const CalendarScreen: React.FC = () => {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showPostModal, setShowPostModal] = useState(false);
 
   // Mock data - will be replaced with real API calls
-  const [scheduledPosts, setScheduledPosts] = useState<SocialPost[]>([
+  const [scheduledPosts] = useState<SocialPost[]>([
     {
       id: '1',
       companyId: 'comp1',
@@ -59,7 +56,7 @@ const CalendarScreen: React.FC = () => {
     },
   ]);
 
-  const [events, setEvents] = useState<CalendarEvent[]>([
+  const [events] = useState<CalendarEvent[]>([
     {
       id: 'e1',
       companyId: 'comp1',
@@ -320,7 +317,6 @@ const CalendarScreen: React.FC = () => {
               className={`min-h-[120px] p-2 ${
                 !day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'
               } ${isToday(day.date) ? 'bg-blue-50' : ''} hover:bg-gray-50 transition-colors cursor-pointer`}
-              onClick={() => setSelectedDate(day.date)}
             >
               <div className={`text-sm font-medium mb-2 ${
                 !day.isCurrentMonth ? 'text-gray-400' : 'text-gray-900'

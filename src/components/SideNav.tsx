@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
-interface NavItem {
-  id: string;
-  label: string;
-  icon: string;
-  category?: string;
-}
-
 interface SideNavProps {
   activeScreen: string;
   onNavigate: (screen: string) => void;
 }
 
 const SideNav: React.FC<SideNavProps> = ({ activeScreen, onNavigate }) => {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   const [expandedCategory, setExpandedCategory] = useState<string | null>('foundation');
 
   const navCategories = [
