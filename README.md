@@ -69,3 +69,4 @@ growthhub-projekt/
 **Hvis du får TypeScript fejl:**
 - Kør `npm install` igen
 - Tjek at `tsconfig.json` eksisterer
+ 
