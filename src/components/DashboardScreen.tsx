@@ -1,344 +1,243 @@
-import React, { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { 
-  formatCurrency, 
-  formatNumber, 
-  formatPercentage,
-  formatGrowthRate 
-} from '../utils/formatters';
-import { formatRelativeTime } from '../utils/dateUtils';
-import { Company, Prospect, Partner, SocialPost } from '../types';
+import React from 'react';
+import { DashboardMetrics, Activity, Partner, Prospect } from '../types';
 
-interface DashboardMetrics {
-  revenue: {
-    current: number;
-    previous: number;
-    growth: number;
-  };
-  prospects: {
-    total: number;
-    qualified: number;
-    conversion: number;
-  };
-  partners: {
-    active: number;
-    pending: number;
-    totalRevenue: number;
-  };
-  social: {
-    posts: number;
-    engagement: number;
-    reach: number;
-  };
+interface DashboardScreenProps {
+  onNavigate: (screen: string) => void;
 }
 
-const DashboardScreen: React.FC = () => {
-  const { t } = useLanguage();
-  const [metrics, setMetrics] = useState<DashboardMetrics>({
-    revenue: { current: 450000, previous: 380000, growth: 18.4 },
-    prospects: { total: 127, qualified: 45, conversion: 35.4 },
-    partners: { active: 23, pending: 7, totalRevenue: 125000 },
-    social: { posts: 48, engagement: 2847, reach: 45230 },
-  });
-
-  const [recentActivity, setRecentActivity] = useState([
-    { id: '1', type: 'prospect', action: 'Ny kvalificeret prospect: Acme Corp', time: new Date(Date.now() - 1800000) },
-    { id: '2', type: 'partner', action: 'Partner godkendt: TechSolutions ApS', time: new Date(Date.now() - 3600000) },
-    { id: '3', type: 'social', action: 'LinkedIn opslag publiceret: Q1 Results', time: new Date(Date.now() - 7200000) },
-    { id: '4', type: 'revenue', action: 'Ny ordre modtaget: 45.000 kr', time: new Date(Date.now() - 10800000) },
-  ]);
-
-  const [topProspects, setTopProspects] = useState([
-    { id: '1', name: 'Acme Corporation', value: 150000, probability: 75, status: 'negotiation' },
-    { id: '2', name: 'Nordic Solutions', value: 95000, probability: 60, status: 'proposal' },
-    { id: '3', name: 'Digital Dynamics', value: 78000, probability: 85, status: 'negotiation' },
-    { id: '4', name: 'Future Tech AB', value: 62000, probability: 45, status: 'qualified' },
-  ]);
-
-  const [topPartners, setTopPartners] = useState([
-    { id: '1', name: 'TechPartners A/S', revenue: 45000, referrals: 12 },
-    { id: '2', name: 'Growth Solutions', revenue: 38000, referrals: 9 },
-    { id: '3', name: 'Digital Hub', revenue: 25000, referrals: 7 },
-  ]);
-
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'prospect':
-        return '🎯';
-      case 'partner':
-        return '🤝';
-      case 'social':
-        return '📱';
-      case 'revenue':
-        return '💰';
-      default:
-        return '📊';
-    }
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
+  // Mock data
+  const metrics: DashboardMetrics = {
+    totalRevenue: 2847650,
+    activeProspects: 47,
+    activePartners: 23,
+    socialEngagement: 4.2,
+    revenueChange: 12.5,
+    prospectsChange: 8.3,
+    partnersChange: 5.7,
+    engagementChange: 15.2
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'negotiation':
-        return 'bg-green-100 text-green-800';
-      case 'proposal':
-        return 'bg-blue-100 text-blue-800';
-      case 'qualified':
-        return 'bg-purple-100 text-purple-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+  const recentActivity: Activity[] = [
+    { id: '1', type: 'prospect', title: 'New Prospect', description: 'Acme Corp showed interest', timestamp: '2 hours ago' },
+    { id: '2', type: 'post', title: 'LinkedIn Post Published', description: 'Q1 Results announcement', timestamp: '5 hours ago' },
+    { id: '3', type: 'partner', title: 'Partner Meeting', description: 'Met with TechVentures', timestamp: '1 day ago' },
+  ];
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'negotiation':
-        return 'Forhandling';
-      case 'proposal':
-        return 'Tilbud';
-      case 'qualified':
-        return 'Kvalificeret';
-      default:
-        return status;
-    }
+  const topProspects: Prospect[] = [
+    { id: '1', name: 'Acme Corp', email: 'contact@acme.com', source: 'LinkedIn', status: 'qualified', score: 85, createdAt: '2026-02-01' },
+    { id: '2', name: 'TechStart Inc', email: 'hello@techstart.io', source: 'Referral', status: 'contacted', score: 72, createdAt: '2026-02-03' },
+    { id: '3', name: 'Global Solutions', email: 'info@global.com', source: 'Website', status: 'new', score: 68, createdAt: '2026-02-05' },
+  ];
+
+  const topPartners: Partner[] = [
+    { id: '1', name: 'Nordic Ventures', email: 'contact@nordic.vc', status: 'active', revenue: 450000, lastContact: '2026-02-08' },
+    { id: '2', name: 'TechPartners AS', email: 'hello@techpartners.no', status: 'active', revenue: 320000, lastContact: '2026-02-07' },
+    { id: '3', name: 'Innovation Hub', email: 'info@innovhub.com', status: 'active', revenue: 280000, lastContact: '2026-02-06' },
+  ];
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK', minimumFractionDigits: 0 }).format(amount);
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-8 max-w-7xl mx-auto theme-transition">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Velkommen tilbage! Her er din oversigt.</p>
+        <h1 className="text-4xl font-black text-[var(--text-primary)] tracking-tighter mb-2">
+          Dashboard
+        </h1>
+        <p className="text-[var(--text-secondary)] font-medium">
+          Velkommen tilbage! Her er dit overblik.
+        </p>
       </div>
 
-      {/* Key Metrics */}
+      {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Revenue Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-2xl p-6 hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <span className="text-2xl">💰</span>
+            <div className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+              Samlet Omsætning
             </div>
-            <span className={`text-sm font-semibold px-2 py-1 rounded ${
-              metrics.revenue.growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-            }`}>
-              {formatGrowthRate(metrics.revenue.current, metrics.revenue.previous)}
-            </span>
+            <div className={`text-xs font-black ${metrics.revenueChange >= 0 ? 'text-brand-accent-green' : 'text-brand-accent-red'}`}>
+              {metrics.revenueChange >= 0 ? '+' : ''}{metrics.revenueChange}%
+            </div>
           </div>
-          <h3 className="text-gray-600 text-sm font-medium mb-1">Samlet Omsætning</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(metrics.revenue.current)}</p>
-          <p className="text-sm text-gray-500 mt-2">
-            Fra {formatCurrency(metrics.revenue.previous)} sidste måned
-          </p>
+          <div className="text-3xl font-black text-brand-primary">
+            {formatCurrency(metrics.totalRevenue)}
+          </div>
         </div>
 
-        {/* Prospects Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-2xl p-6 hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <span className="text-2xl">🎯</span>
+            <div className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+              Aktive Prospects
             </div>
-            <span className="text-sm font-semibold px-2 py-1 rounded bg-blue-100 text-blue-700">
-              {formatPercentage(metrics.prospects.conversion)}
-            </span>
+            <div className={`text-xs font-black ${metrics.prospectsChange >= 0 ? 'text-brand-accent-green' : 'text-brand-accent-red'}`}>
+              {metrics.prospectsChange >= 0 ? '+' : ''}{metrics.prospectsChange}%
+            </div>
           </div>
-          <h3 className="text-gray-600 text-sm font-medium mb-1">Prospects</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatNumber(metrics.prospects.total)}</p>
-          <p className="text-sm text-gray-500 mt-2">
-            {metrics.prospects.qualified} kvalificerede
-          </p>
+          <div className="text-3xl font-black text-brand-accent-teal">
+            {metrics.activeProspects}
+          </div>
         </div>
 
-        {/* Partners Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-2xl p-6 hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <span className="text-2xl">🤝</span>
+            <div className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+              Aktive Partnere
             </div>
-            <span className="text-sm font-semibold px-2 py-1 rounded bg-purple-100 text-purple-700">
-              {metrics.partners.pending} afventer
-            </span>
+            <div className={`text-xs font-black ${metrics.partnersChange >= 0 ? 'text-brand-accent-green' : 'text-brand-accent-red'}`}>
+              {metrics.partnersChange >= 0 ? '+' : ''}{metrics.partnersChange}%
+            </div>
           </div>
-          <h3 className="text-gray-600 text-sm font-medium mb-1">Partnere</h3>
-          <p className="text-2xl font-bold text-gray-900">{metrics.partners.active}</p>
-          <p className="text-sm text-gray-500 mt-2">
-            {formatCurrency(metrics.partners.totalRevenue)} i provision
-          </p>
+          <div className="text-3xl font-black text-[var(--text-primary)]">
+            {metrics.activePartners}
+          </div>
         </div>
 
-        {/* Social Media Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-2xl p-6 hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <span className="text-2xl">📱</span>
+            <div className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+              Social Engagement
             </div>
-            <span className="text-sm font-semibold px-2 py-1 rounded bg-orange-100 text-orange-700">
-              {formatPercentage(metrics.social.engagement / metrics.social.reach * 100)}
-            </span>
+            <div className={`text-xs font-black ${metrics.engagementChange >= 0 ? 'text-brand-accent-green' : 'text-brand-accent-red'}`}>
+              {metrics.engagementChange >= 0 ? '+' : ''}{metrics.engagementChange}%
+            </div>
           </div>
-          <h3 className="text-gray-600 text-sm font-medium mb-1">Social Media</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatNumber(metrics.social.posts)}</p>
-          <p className="text-sm text-gray-500 mt-2">
-            {formatNumber(metrics.social.reach)} rækkevidde
-          </p>
+          <div className="text-3xl font-black text-brand-accent-pink">
+            {metrics.socialEngagement}%
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900">Seneste Aktivitet</h2>
-          </div>
-          <div className="divide-y divide-gray-100">
-            {recentActivity.map((activity) => (
-              <div key={activity.id} className="p-4 hover:bg-gray-50 transition-colors">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">{getActivityIcon(activity.type)}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900">{activity.action}</p>
-                    <p className="text-xs text-gray-500 mt-1">{formatRelativeTime(activity.time)}</p>
+        <div className="lg:col-span-2 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-3xl p-8">
+          <h2 className="text-xl font-black text-[var(--text-primary)] uppercase tracking-tight mb-6">
+            Seneste Aktivitet
+          </h2>
+          <div className="space-y-4">
+            {recentActivity.map(activity => (
+              <div key={activity.id} className="flex items-start gap-4 p-4 bg-[var(--bg-card-hover)] rounded-xl border border-[var(--border-dark)]">
+                <div className="h-10 w-10 rounded-full bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="h-2 w-2 rounded-full bg-brand-primary"></div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-[var(--text-primary)] mb-1">
+                    {activity.title}
+                  </div>
+                  <div className="text-sm text-[var(--text-secondary)]">
+                    {activity.description}
+                  </div>
+                  <div className="text-xs text-[var(--text-muted)] mt-1">
+                    {activity.timestamp}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="p-4 border-t border-gray-100">
-            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              Se alle aktiviteter →
-            </button>
-          </div>
         </div>
 
         {/* Top Prospects */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900">Top Prospects</h2>
-          </div>
-          <div className="divide-y divide-gray-100">
-            {topProspects.map((prospect) => (
-              <div key={prospect.id} className="p-4 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium text-gray-900">{prospect.name}</h3>
-                  <span className={`text-xs px-2 py-1 rounded font-medium ${getStatusColor(prospect.status)}`}>
-                    {getStatusLabel(prospect.status)}
+        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-3xl p-8">
+          <h2 className="text-xl font-black text-[var(--text-primary)] uppercase tracking-tight mb-6">
+            Top Prospects
+          </h2>
+          <div className="space-y-4">
+            {topProspects.map(prospect => (
+              <div key={prospect.id} className="p-4 bg-[var(--bg-card-hover)] rounded-xl border border-[var(--border-dark)] cursor-pointer hover:border-brand-primary/30 transition-all">
+                <div className="font-bold text-[var(--text-primary)] mb-2">
+                  {prospect.name}
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`px-2 py-1 rounded-full text-[9px] font-black uppercase ${
+                    prospect.status === 'qualified' ? 'bg-brand-accent-green/10 text-brand-accent-green' :
+                    prospect.status === 'contacted' ? 'bg-brand-primary/10 text-brand-primary' :
+                    'bg-[var(--bg-card)] text-[var(--text-muted)]'
+                  }`}>
+                    {prospect.status}
+                  </span>
+                  <span className="text-xs text-[var(--text-muted)]">
+                    Score: {prospect.score}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">{formatCurrency(prospect.value)}</span>
-                  <span className="text-gray-600">{prospect.probability}% sandsynlighed</span>
-                </div>
-                <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
-                  <div 
-                    className="bg-blue-600 h-full rounded-full transition-all duration-300"
-                    style={{ width: `${prospect.probability}%` }}
-                  />
+                <div className="w-full bg-[var(--bg-card)] h-2 rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-primary transition-all" style={{ width: `${prospect.score}%` }}></div>
                 </div>
               </div>
             ))}
-          </div>
-          <div className="p-4 border-t border-gray-100">
-            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              Se alle prospects →
-            </button>
           </div>
         </div>
       </div>
 
       {/* Top Partners */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900">Top Partnere</h2>
-        </div>
+      <div className="mt-8 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-3xl p-8">
+        <h2 className="text-xl font-black text-[var(--text-primary)] uppercase tracking-tight mb-6">
+          Top Partnere
+        </h2>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <thead>
+              <tr className="border-b border-[var(--border-dark)]">
+                <th className="text-left py-3 px-4 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
                   Partner
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-left py-3 px-4 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+                  Email
+                </th>
+                <th className="text-right py-3 px-4 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
                   Omsætning
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Henvisninger
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Handling
+                <th className="text-left py-3 px-4 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+                  Sidste Kontakt
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {topPartners.map((partner) => (
-                <tr key={partner.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-semibold">
-                        {partner.name.substring(0, 2).toUpperCase()}
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{partner.name}</div>
-                      </div>
+            <tbody>
+              {topPartners.map(partner => (
+                <tr key={partner.id} className="border-b border-[var(--border-dark)] hover:bg-[var(--bg-card-hover)] transition-colors cursor-pointer">
+                  <td className="py-4 px-4">
+                    <div className="font-bold text-[var(--text-primary)]">
+                      {partner.name}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-semibold text-gray-900">{formatCurrency(partner.revenue)}</div>
+                  <td className="py-4 px-4 text-[var(--text-secondary)]">
+                    {partner.email}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{partner.referrals} henvisninger</div>
+                  <td className="py-4 px-4 text-right font-black text-brand-primary">
+                    {formatCurrency(partner.revenue || 0)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button className="text-blue-600 hover:text-blue-700 font-medium">
-                      Se detaljer →
-                    </button>
+                  <td className="py-4 px-4 text-[var(--text-muted)] text-sm">
+                    {partner.lastContact}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="p-4 border-t border-gray-100">
-          <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-            Se alle partnere →
-          </button>
-        </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button className="p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all text-left group">
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-500 transition-colors">
-            <span className="text-xl group-hover:scale-110 transition-transform">➕</span>
-          </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Ny Prospect</h3>
-          <p className="text-sm text-gray-600">Tilføj en ny prospect til CRM</p>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <button onClick={() => onNavigate('calendar')} className="p-6 bg-gradient-to-br from-brand-primary to-brand-primary/80 text-white rounded-2xl text-left hover:scale-105 transition-transform shadow-2xl">
+          <div className="text-2xl font-black mb-2">📅</div>
+          <div className="font-black uppercase tracking-tight">Planlæg Indhold</div>
+          <div className="text-sm opacity-80 mt-1">Opret nye opslag</div>
         </button>
 
-        <button className="p-4 bg-white rounded-xl border border-gray-200 hover:border-green-500 hover:shadow-md transition-all text-left group">
-          <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-500 transition-colors">
-            <span className="text-xl group-hover:scale-110 transition-transform">🤝</span>
-          </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Ny Partner</h3>
-          <p className="text-sm text-gray-600">Inviter en ny samarbejdspartner</p>
+        <button onClick={() => onNavigate('prospecting')} className="p-6 bg-gradient-to-br from-brand-accent-teal to-brand-accent-teal/80 text-white rounded-2xl text-left hover:scale-105 transition-transform shadow-2xl">
+          <div className="text-2xl font-black mb-2">🎯</div>
+          <div className="font-black uppercase tracking-tight">Ny Prospect</div>
+          <div className="text-sm opacity-80 mt-1">Tilføj lead</div>
         </button>
 
-        <button className="p-4 bg-white rounded-xl border border-gray-200 hover:border-purple-500 hover:shadow-md transition-all text-left group">
-          <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-500 transition-colors">
-            <span className="text-xl group-hover:scale-110 transition-transform">📱</span>
-          </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Planlæg Opslag</h3>
-          <p className="text-sm text-gray-600">Opret nyt social media opslag</p>
-        </button>
-
-        <button className="p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-500 hover:shadow-md transition-all text-left group">
-          <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-500 transition-colors">
-            <span className="text-xl group-hover:scale-110 transition-transform">📊</span>
-          </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Se Rapport</h3>
-          <p className="text-sm text-gray-600">Generer detaljeret analytics</p>
+        <button onClick={() => onNavigate('partners')} className="p-6 bg-gradient-to-br from-brand-accent-pink to-brand-accent-pink/80 text-white rounded-2xl text-left hover:scale-105 transition-transform shadow-2xl">
+          <div className="text-2xl font-black mb-2">🤝</div>
+          <div className="font-black uppercase tracking-tight">Se Partnere</div>
+          <div className="text-sm opacity-80 mt-1">Administrer relationer</div>
         </button>
       </div>
     </div>
   );
 };
-
-export default DashboardScreen;

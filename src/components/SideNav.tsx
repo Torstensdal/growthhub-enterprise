@@ -1,166 +1,140 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
 
 interface SideNavProps {
   activeScreen: string;
   onNavigate: (screen: string) => void;
 }
 
-const SideNav: React.FC<SideNavProps> = ({ activeScreen, onNavigate }) => {
-  const { language } = useLanguage();
-  const [expandedCategory, setExpandedCategory] = useState<string | null>('foundation');
+export const SideNav: React.FC<SideNavProps> = ({ activeScreen, onNavigate }) => {
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(['foundation']);
 
-  const navCategories = [
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const categories = [
     {
       id: 'foundation',
-      label: 'Værkstfundament',
+      name: 'Værkstfundament',
       icon: '🏗️',
       items: [
-        { id: 'onboarding', label: 'Onboarding', icon: '🎯' },
-        { id: 'workspace', label: 'Workspace Hub', icon: '💼' },
-      ],
+        { id: 'dashboard', name: 'Dashboard', icon: '📊' },
+        { id: 'company', name: 'Virksomhed', icon: '🏢' },
+        { id: 'strategy', name: 'Strategi', icon: '🎯' },
+      ]
     },
     {
       id: 'marketing',
-      label: 'Marketing Center',
+      name: 'Marketing Center',
       icon: '📢',
       items: [
-        { id: 'media-library', label: 'Media Library', icon: '📁' },
-        { id: 'calendar', label: 'Kalender', icon: '📅' },
-        { id: 'social', label: 'Social Media', icon: '📱' },
-      ],
+        { id: 'calendar', name: 'Kalender', icon: '📅' },
+        { id: 'social', name: 'Social Media', icon: '💬' },
+        { id: 'content', name: 'Indhold', icon: '✍️' },
+      ]
     },
     {
       id: 'sales',
-      label: 'Salg & Relationer',
-      icon: '💼',
+      name: 'Salg & Relationer',
+      icon: '🤝',
       items: [
-        { id: 'partners', label: 'Partnere', icon: '🤝' },
-        { id: 'prospecting', label: 'Prospektering', icon: '🎯' },
-        { id: 'drip-campaigns', label: 'Drip Campaigns', icon: '📧' },
-        { id: 'leads', label: 'Leads', icon: '👥' },
-      ],
+        { id: 'prospecting', name: 'Prospecting', icon: '🎯' },
+        { id: 'partners', name: 'Partnere', icon: '👥' },
+        { id: 'reports', name: 'Rapporter', icon: '📈' },
+      ]
     },
     {
-      id: 'insights',
-      label: 'Indsigt & Vækst',
-      icon: '📊',
-      items: [
-        { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-        { id: 'reports', label: 'Rapporter', icon: '📈' },
-        { id: 'analytics', label: 'Analytics', icon: '🔍' },
-      ],
-    },
-    {
-      id: 'development',
-      label: 'Udvikling',
+      id: 'growth',
+      name: 'Vækst',
       icon: '🚀',
       items: [
-        { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
-        { id: 'features', label: 'Features', icon: '⭐' },
-      ],
-    },
+        { id: 'roadmap', name: 'Roadmap', icon: '🗺️' },
+        { id: 'analytics', name: 'Analytics', icon: '📊' },
+      ]
+    }
   ];
-
-  const bottomNavItems = [
-    { id: 'settings', label: 'Indstillinger', icon: '⚙️' },
-    { id: 'help', label: 'Hjælp', icon: '❓' },
-  ];
-
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
-  };
 
   return (
-    <div className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 h-screen flex flex-col shadow-2xl">
-      {/* Logo/Brand */}
-      <div className="p-6 border-b border-slate-700">
+    <aside className="w-64 bg-[var(--bg-sidebar)] border-r border-[var(--border-primary)] flex flex-col h-screen overflow-y-auto theme-transition">
+      {/* Logo */}
+      <div className="p-6 border-b border-[var(--border-primary)]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-xl font-bold text-white">GH</span>
+          <div className="h-10 w-10 rounded-xl bg-brand-primary flex items-center justify-center text-white font-black text-xl">
+            G
           </div>
           <div>
-            <h1 className="text-white font-bold text-lg">GrowthHub</h1>
-            <p className="text-slate-400 text-xs">Enterprise</p>
+            <div className="font-black text-[var(--text-primary)] text-lg tracking-tight">
+              GrowthHub
+            </div>
+            <div className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+              Enterprise
+            </div>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto py-4 px-3">
-        {navCategories.map((category) => (
-          <div key={category.id} className="mb-2">
-            {/* Category Header */}
-            <button
-              onClick={() => toggleCategory(category.id)}
-              className="w-full flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all group"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{category.icon}</span>
-                <span className="text-sm font-semibold">{category.label}</span>
-              </div>
-              <span className={`text-xs transition-transform ${
-                expandedCategory === category.id ? 'rotate-180' : ''
-              }`}>
-                ▼
-              </span>
-            </button>
+      <nav className="flex-1 p-4 space-y-2">
+        {categories.map(category => {
+          const isExpanded = expandedCategories.includes(category.id);
+          
+          return (
+            <div key={category.id} className="space-y-1">
+              {/* Category Header */}
+              <button
+                onClick={() => toggleCategory(category.id)}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-[var(--bg-card-hover)] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{category.icon}</span>
+                  <span className="text-xs font-black text-[var(--text-secondary)] uppercase tracking-widest group-hover:text-[var(--text-primary)]">
+                    {category.name}
+                  </span>
+                </div>
+                <svg
+                  className={`h-4 w-4 text-[var(--text-muted)] transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
 
-            {/* Category Items */}
-            {expandedCategory === category.id && (
-              <div className="mt-1 ml-6 space-y-1">
-                {category.items.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => onNavigate(item.id)}
-                    className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all ${
-                      activeScreen === item.id
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-                    }`}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+              {/* Category Items */}
+              {isExpanded && (
+                <div className="ml-4 space-y-1">
+                  {category.items.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => onNavigate(item.id)}
+                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        activeScreen === item.id
+                          ? 'bg-brand-primary text-white shadow-lg'
+                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
 
-      {/* Bottom Navigation */}
-      <div className="border-t border-slate-700 p-3">
-        {bottomNavItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onNavigate(item.id)}
-            className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all mb-1 ${
-              activeScreen === item.id
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-            }`}
-          >
-            <span>{item.icon}</span>
-            <span>{item.label}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* User Info */}
-      <div className="border-t border-slate-700 p-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-            KS
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-white text-sm font-medium truncate">Kaj Sørensen</p>
-            <p className="text-slate-400 text-xs truncate">Admin</p>
-          </div>
+      {/* Footer */}
+      <div className="p-4 border-t border-[var(--border-primary)]">
+        <div className="text-[9px] text-[var(--text-muted)] text-center font-medium">
+          v1.0.0 • © 2026 GrowthHub
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
-
-export default SideNav;
