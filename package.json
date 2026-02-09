@@ -10,6 +10,8 @@
   "dependencies": {
     "@google/genai": "^1.1.0",
     "@google/generative-ai": "^0.21.0",
+    "@types/file-saver": "^2.0.7",
+    "@types/uuid": "^10.0.0",
     "cors": "^2.8.5",
     "docx": "^9.1.0",
     "dotenv": "^16.4.5",
@@ -18,7 +20,7 @@
     "jszip": "^3.10.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
