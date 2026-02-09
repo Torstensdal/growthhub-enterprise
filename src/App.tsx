@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { ViewType } from './types';
+import CalendarScreen from './components/CalendarScreen';
+import ProspectingScreen from './components/ProspectingScreen';
 
 // Components will be imported as we create them
 // import CalendarScreen from './components/CalendarScreen';
@@ -26,19 +28,9 @@ function App() {
   const renderView = () => {
     switch (currentView) {
       case 'calendar':
-        return (
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Kalender</h2>
-            <p className="text-gray-600">Kalender view kommer her...</p>
-          </div>
-        );
+        return <CalendarScreen />;
       case 'prospecting':
-        return (
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-4">Prospektering</h2>
-            <p className="text-gray-600">Prospektering view kommer her...</p>
-          </div>
-        );
+        return <ProspectingScreen />;
       case 'social':
         return (
           <div className="p-8">
