@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Prospect, Proposal } from '../types';
+import type { Prospect } from '../types';
 import apiClient from '../services/apiClient';
 
 export default function ProspectingScreen() {
