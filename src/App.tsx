@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ViewType, AppState } from './types';
+import type { ViewType } from './types';
 
 // Components will be imported as we create them
 // import CalendarScreen from './components/CalendarScreen';
