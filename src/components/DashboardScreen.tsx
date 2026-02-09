@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   formatCurrency, 
@@ -7,6 +7,7 @@ import {
   formatGrowthRate 
 } from '../utils/formatters';
 import { formatRelativeTime } from '../utils/dateUtils';
+import { Company, Prospect, Partner, SocialPost } from '../types';
 
 interface DashboardMetrics {
   revenue: {
@@ -32,29 +33,29 @@ interface DashboardMetrics {
 }
 
 const DashboardScreen: React.FC = () => {
-  const { language } = useLanguage();
-  const [metrics] = useState<DashboardMetrics>({
+  const { t } = useLanguage();
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
     revenue: { current: 450000, previous: 380000, growth: 18.4 },
     prospects: { total: 127, qualified: 45, conversion: 35.4 },
     partners: { active: 23, pending: 7, totalRevenue: 125000 },
     social: { posts: 48, engagement: 2847, reach: 45230 },
   });
 
-  const [recentActivity] = useState([
+  const [recentActivity, setRecentActivity] = useState([
     { id: '1', type: 'prospect', action: 'Ny kvalificeret prospect: Acme Corp', time: new Date(Date.now() - 1800000) },
     { id: '2', type: 'partner', action: 'Partner godkendt: TechSolutions ApS', time: new Date(Date.now() - 3600000) },
     { id: '3', type: 'social', action: 'LinkedIn opslag publiceret: Q1 Results', time: new Date(Date.now() - 7200000) },
     { id: '4', type: 'revenue', action: 'Ny ordre modtaget: 45.000 kr', time: new Date(Date.now() - 10800000) },
   ]);
 
-  const [topProspects] = useState([
+  const [topProspects, setTopProspects] = useState([
     { id: '1', name: 'Acme Corporation', value: 150000, probability: 75, status: 'negotiation' },
     { id: '2', name: 'Nordic Solutions', value: 95000, probability: 60, status: 'proposal' },
     { id: '3', name: 'Digital Dynamics', value: 78000, probability: 85, status: 'negotiation' },
     { id: '4', name: 'Future Tech AB', value: 62000, probability: 45, status: 'qualified' },
   ]);
 
-  const [topPartners] = useState([
+  const [topPartners, setTopPartners] = useState([
     { id: '1', name: 'TechPartners A/S', revenue: 45000, referrals: 12 },
     { id: '2', name: 'Growth Solutions', revenue: 38000, referrals: 9 },
     { id: '3', name: 'Digital Hub', revenue: 25000, referrals: 7 },

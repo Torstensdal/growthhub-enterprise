@@ -1,313 +1,105 @@
-// Core Types for GrowthHub Enterprise
+// Core type definitions
+export type Language = 'en' | 'da' | 'de';
+export type Theme = 'light' | 'dark';
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'user';
-  companyId: string;
-  createdAt: Date;
-}
+// Calendar Event Types
+export type EventType = 'post' | 'meeting' | 'call' | 'task' | 'deadline' | 'follow-up';
+export type EventStatus = 'scheduled' | 'confirmed' | 'pending' | 'completed' | 'cancelled';
+export type SocialPlatform = 'linkedin' | 'facebook' | 'instagram' | 'twitter' | 'tiktok';
 
-export interface Company {
+export interface CalendarEvent {
   id: string;
-  name: string;
-  industry: string;
-  website?: string;
-  logo?: string;
+  title: string;
+  date: string; // Format: YYYY-MM-DD
+  time: string; // Format: HH:MM
+  type: EventType;
+  platform?: SocialPlatform;
+  status: EventStatus;
   description?: string;
-  foundedYear?: number;
-  size?: string;
-  targetAudience?: string;
-  uniqueSellingPoints?: string[];
-  competitors?: string[];
-  goals?: string[];
-  challenges?: string[];
-  contentStrategy?: ContentStrategy;
-  brandGuidelines?: BrandGuidelines;
-  createdAt: Date;
-  updatedAt: Date;
+  partnerId?: string;
 }
 
-export interface ContentStrategy {
-  platforms: string[];
-  toneOfVoice: string;
-  keyMessages: string[];
-  contentPillars: string[];
-  postingFrequency: {
-    [platform: string]: number; // posts per week
-  };
+// Social Post Types
+export interface SocialPost {
+  id: string;
+  platform: SocialPlatform;
+  content: string;
+  scheduledDate: string; // Format: YYYY-MM-DD
+  scheduledTime: string; // Format: HH:MM
+  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  mediaUrls?: string[];
   hashtags?: string[];
 }
 
-export interface BrandGuidelines {
-  primaryColors: string[];
-  secondaryColors?: string[];
-  fonts: string[];
-  logoUsage?: string;
-  imageStyle?: string;
-  voiceCharacteristics?: string[];
+// Company & Partner Types
+export interface Company {
+  id: string;
+  name: string;
+  website: string;
+  description?: string;
+  logo?: string;
+  language: Language;
+  partners?: Partner[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Partner {
   id: string;
-  companyId: string;
   name: string;
   email: string;
   phone?: string;
-  companyName?: string;
-  partnerType: 'reseller' | 'affiliate' | 'integration' | 'referral';
+  company?: string;
+  role?: string;
   status: 'active' | 'inactive' | 'pending';
-  commissionRate: number;
-  totalRevenue: number;
-  referrals: number;
-  joinedDate: Date;
-  notes?: string;
-  contactPerson?: string;
-  website?: string;
-  logo?: string;
+  revenue?: number;
+  lastContact?: string;
 }
 
-export interface PartnerIdea {
-  id: string;
-  companyId: string;
-  name: string;
-  type: string;
-  description: string;
-  potentialValue: string;
-  effort: 'low' | 'medium' | 'high';
-  priority: number;
-  status: 'idea' | 'researching' | 'in-progress' | 'implemented';
-  createdAt: Date;
-  notes?: string;
-}
-
+// Prospect Types
 export interface Prospect {
   id: string;
-  companyId: string;
   name: string;
   email: string;
-  phone?: string;
   company?: string;
-  position?: string;
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'won' | 'lost';
-  source: string;
-  value?: number;
-  probability?: number;
-  nextAction?: string;
-  nextActionDate?: Date;
-  notes?: string;
-  tags?: string[];
-  createdAt: Date;
-  updatedAt: Date;
-  lastContactedAt?: Date;
-}
-
-export interface Lead {
-  id: string;
-  companyId: string;
-  name: string;
-  email: string;
   phone?: string;
-  company?: string;
   source: string;
-  status: 'new' | 'contacted' | 'qualified' | 'unqualified';
-  score?: number;
-  createdAt: Date;
+  status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
+  score: number;
   notes?: string;
+  createdAt: string;
+  lastContact?: string;
 }
 
-export interface DripCampaign {
+// Dashboard Metrics
+export interface DashboardMetrics {
+  totalRevenue: number;
+  activeProspects: number;
+  activePartners: number;
+  socialEngagement: number;
+  revenueChange: number;
+  prospectsChange: number;
+  partnersChange: number;
+  engagementChange: number;
+}
+
+// Activity Feed
+export interface Activity {
   id: string;
-  companyId: string;
-  name: string;
-  description?: string;
-  status: 'draft' | 'active' | 'paused' | 'completed';
-  emails: DripEmail[];
-  subscribers: number;
-  openRate?: number;
-  clickRate?: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface DripEmail {
-  id: string;
-  subject: string;
-  content: string;
-  delayDays: number;
-  order: number;
-}
-
-export interface SocialPost {
-  id: string;
-  companyId: string;
-  platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram';
-  content: string;
-  mediaUrls?: string[];
-  scheduledFor?: Date | string;
-  publishedAt?: Date | string;
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
-  engagement?: {
-    likes: number;
-    comments: number;
-    shares: number;
-    views: number;
-  };
-  hashtags?: string[];
-  createdAt: Date | string;
-}
-
-export interface MediaAsset {
-  id: string;
-  companyId: string;
-  name: string;
-  type: 'image' | 'video' | 'document' | 'audio';
-  url: string;
-  thumbnailUrl?: string;
-  size: number;
-  format: string;
-  tags?: string[];
-  aiTags?: string[];
-  description?: string;
-  uploadedAt: Date;
-  usageCount?: number;
-}
-
-export interface CalendarEvent {
-  id: string;
-  companyId: string;
-  title: string;
-  description?: string;
-  startDate: Date | string;
-  endDate: Date | string;
-  type: 'social-post' | 'campaign' | 'meeting' | 'deadline' | 'other' | 'call' | 'task' | 'follow-up';
-  relatedId?: string; // ID of related entity (post, campaign, etc.)
-  completed?: boolean;
-  reminders?: Date[];
-  attendees?: string[];
-}
-
-export interface Workspace {
-  id: string;
-  name: string;
-  type: 'company' | 'personal' | 'project';
-  companyId?: string;
-  userId: string;
-  settings?: WorkspaceSettings;
-  createdAt: Date;
-}
-
-export interface WorkspaceSettings {
-  theme: 'light' | 'dark' | 'auto';
-  language: 'en' | 'da' | 'de';
-  notifications: boolean;
-  defaultView?: string;
-}
-
-export interface OnboardingProgress {
-  companyId: string;
-  step: number;
-  completed: boolean;
-  steps: {
-    [key: number]: {
-      completed: boolean;
-      data?: any;
-    };
-  };
-  lastUpdated: Date;
-}
-
-export interface RoadmapFeature {
-  id: string;
+  type: 'prospect' | 'partner' | 'post' | 'meeting' | 'revenue';
   title: string;
   description: string;
-  category: string;
-  status: 'planned' | 'in-progress' | 'completed';
-  priority: 'low' | 'medium' | 'high';
-  quarter?: 'Q1' | 'Q2' | 'Q3' | 'Q4';
-  year?: number;
-  votes?: number;
-  estimatedCompletion?: Date;
+  timestamp: string;
+  icon?: string;
 }
 
-export interface Report {
+// User Types
+export interface User {
   id: string;
-  companyId: string;
-  type: 'overview' | 'prospects' | 'social' | 'partners';
-  period: 'week' | 'month' | 'quarter' | 'year';
-  data: any;
-  generatedAt: Date;
-}
-
-// Utility Types
-export type Language = 'en' | 'da' | 'de';
-export type Theme = 'light' | 'dark' | 'auto';
-export type UserRole = 'admin' | 'user' | 'viewer';
-
-// Re-export for convenience
-export type { Language as Lang };
-
-// API Response Types
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  hasMore: boolean;
-}
-
-// Form Data Types
-export interface CompanyFormData {
-  name: string;
-  industry: string;
-  website?: string;
-  description?: string;
-  foundedYear?: number;
-  size?: string;
-  targetAudience?: string;
-  uniqueSellingPoints?: string[];
-  competitors?: string[];
-  goals?: string[];
-  challenges?: string[];
-}
-
-export interface PartnerFormData {
-  name: string;
   email: string;
-  phone?: string;
-  companyName?: string;
-  partnerType: 'reseller' | 'affiliate' | 'integration' | 'referral';
-  commissionRate: number;
-  contactPerson?: string;
-  website?: string;
-  notes?: string;
-}
-
-export interface ProspectFormData {
   name: string;
-  email: string;
-  phone?: string;
-  company?: string;
-  position?: string;
-  source: string;
-  value?: number;
-  probability?: number;
-  notes?: string;
-  tags?: string[];
-}
-
-export interface PostFormData {
-  platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram';
-  content: string;
-  mediaUrls?: string[];
-  scheduledFor?: Date;
-  hashtags?: string[];
+  role: 'admin' | 'user';
+  language: Language;
+  theme: Theme;
+  avatar?: string;
 }
