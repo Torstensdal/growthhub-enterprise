@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { ViewType } from './types';
 import CalendarScreen from './components/CalendarScreen';
 import ProspectingScreen from './components/ProspectingScreen';
+import SocialMediaScreen from './components/SocialMediaScreen';
+import PartnerPortalScreen from './components/PartnerPortalScreen';
 
 // Components will be imported as we create them
 // import CalendarScreen from './components/CalendarScreen';
@@ -31,6 +33,10 @@ function App() {
         return <CalendarScreen />;
       case 'prospecting':
         return <ProspectingScreen />;
+      case 'social':
+        return <SocialMediaScreen />;
+      case 'partners':
+        return <PartnerPortalScreen />;
       case 'social':
         return (
           <div className="p-8">
