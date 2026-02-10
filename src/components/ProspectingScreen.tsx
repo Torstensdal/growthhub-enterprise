@@ -6,13 +6,11 @@ export default function ProspectingScreen() {
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
 
   const getStatusColor = (status: Prospect['status']) => {
-    const colors = {
-      researching: 'bg-gray-100 text-gray-800',
+    const colors: Record<Prospect['status'], string> = {
+      new: 'bg-gray-100 text-gray-800',
       contacted: 'bg-blue-100 text-blue-800',
       qualified: 'bg-purple-100 text-purple-800',
-      proposal: 'bg-yellow-100 text-yellow-800',
-      negotiation: 'bg-orange-100 text-orange-800',
-      won: 'bg-green-100 text-green-800',
+      converted: 'bg-green-100 text-green-800',
       lost: 'bg-red-100 text-red-800',
     };
     return colors[status];
