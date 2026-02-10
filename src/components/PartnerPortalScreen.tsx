@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Partner } from '../types';
+import apiClient from '../services/apiClient';
 
 export default function PartnerPortalScreen() {
   const [partners] = useState<Partner[]>([]);

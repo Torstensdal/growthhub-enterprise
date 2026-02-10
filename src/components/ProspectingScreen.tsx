@@ -6,15 +6,15 @@ export default function ProspectingScreen() {
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
 
   const getStatusColor = (status: Prospect['status']) => {
-    // Colors now match all possible Prospect['status'] values
-    const colors: Record<Prospect['status'], string> = {
-      new: 'bg-gray-100 text-gray-800',
+    const colors = {
+      researching: 'bg-gray-100 text-gray-800',
       contacted: 'bg-blue-100 text-blue-800',
       qualified: 'bg-purple-100 text-purple-800',
-      converted: 'bg-green-100 text-green-800',
+      proposal: 'bg-yellow-100 text-yellow-800',
+      negotiation: 'bg-orange-100 text-orange-800',
+      won: 'bg-green-100 text-green-800',
       lost: 'bg-red-100 text-red-800',
     };
-
     return colors[status];
   };
 
@@ -47,11 +47,7 @@ export default function ProspectingScreen() {
               >
                 <h3 className="font-semibold">{prospect.name}</h3>
                 <p className="text-sm text-gray-600">{prospect.company}</p>
-                <span
-                  className={`inline-block mt-2 px-2 py-1 rounded text-xs ${getStatusColor(
-                    prospect.status
-                  )}`}
-                >
+                <span className={`inline-block mt-2 px-2 py-1 rounded text-xs ${getStatusColor(prospect.status)}`}>
                   {prospect.status}
                 </span>
               </div>
