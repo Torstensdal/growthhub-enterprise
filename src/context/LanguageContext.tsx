@@ -17,7 +17,7 @@ const getSafeStorage = (key: string, fallback: string): string => {
     const item = localStorage.getItem(key);
     return item ?? fallback;
   } catch (e) {
-    console.warn(LocalStorage read failed for key: ${key}. Using fallback.);
+    console.warn(`LocalStorage read failed for key: ${key}. Using fallback.`);
     return fallback;
   }
 };
@@ -26,7 +26,7 @@ const setSafeStorage = (key: string, value: string): void => {
   try {
     localStorage.setItem(key, value);
   } catch (e) {
-    console.warn(LocalStorage write failed for key: ${key}.);
+    console.warn(`LocalStorage write failed for key: ${key}.`);
   }
 };
 
@@ -61,7 +61,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     if (replacements) {
       Object.keys(replacements).forEach(placeholder => {
         const value = String(replacements[placeholder]);
-        translation = translation!.split({${placeholder}}).join(value);
+        translation = translation!.split(`{${placeholder}}`).join(value);
       });
     }
 
