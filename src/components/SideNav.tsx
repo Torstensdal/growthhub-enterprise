@@ -15,8 +15,9 @@ export const items = [
 ] as const;
 
 export type SideNavItem = {
-    key: AppState;
+    key: AppState as unknown as AppState;
     label: string;
 };
 
-export default items.map(i => ({ key: i.key as AppState, label: i.label }));
+export default items.map(i => ({ key: i as unknown as AppState.key as AppState, label: i.label }));
+
