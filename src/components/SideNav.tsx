@@ -18,7 +18,7 @@ import DocumentChartBarIcon from './icons/DocumentChartBarIcon';
 import ListBulletIcon from './icons/ListBulletIcon';
 import FlagIcon from './icons/FlagIcon';
 import DocumentMagnifyingGlassIcon from './icons/DocumentMagnifyingGlassIcon';
-import { BrandPortalLogo } from './BrandPortalLogo';
+import BrandPortalLogo from './BrandPortalLogo';
 
 interface NavItem {
   state: AppState;
