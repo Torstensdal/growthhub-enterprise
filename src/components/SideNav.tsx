@@ -1,23 +1,23 @@
 ﻿import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { PhotoIcon } from './icons/PhotoIcon';
-import { CalendarIcon } from './icons/CalendarIcon';
-import { UsersIcon } from './icons/UsersIcon';
-import { CubeTransparentIcon } from './icons/CubeTransparentIcon';
-import { ChartBarIcon } from './icons/ChartBarIcon';
-import { BriefcaseIcon } from './icons/BriefcaseIcon';
-import { InboxIcon } from './icons/InboxIcon';
-import { RocketLaunchIcon } from './icons/RocketLaunchIcon';
-import { BuildingStorefrontIcon } from './icons/BuildingStorefrontIcon';
-import { PaperAirplaneIcon } from './icons/PaperAirplaneIcon';
-import { ChevronDownIcon } from './icons/ChevronDownIcon';
-import { CogIcon } from './icons/CogIcon';
-import { AppState, TeamMemberRole, Company } from '../types';
-import { HomeIcon } from './icons/HomeIcon';
-import { DocumentChartBarIcon } from './icons/DocumentChartBarIcon';
-import { ListBulletIcon } from './icons/ListBulletIcon';
-import { FlagIcon } from './icons/FlagIcon';
-import { DocumentMagnifyingGlassIcon } from './icons/DocumentMagnifyingGlassIcon';
+import PhotoIcon from './icons/PhotoIcon';
+import CalendarIcon from './icons/CalendarIcon';
+import UsersIcon from './icons/UsersIcon';
+import CubeTransparentIcon from './icons/CubeTransparentIcon';
+import ChartBarIcon from './icons/ChartBarIcon';
+import BriefcaseIcon from './icons/BriefcaseIcon';
+import InboxIcon from './icons/InboxIcon';
+import RocketLaunchIcon from './icons/RocketLaunchIcon';
+import BuildingStorefrontIcon from './icons/BuildingStorefrontIcon';
+import PaperAirplaneIcon from './icons/PaperAirplaneIcon';
+import ChevronDownIcon from './icons/ChevronDownIcon';
+import CogIcon from './icons/CogIcon';
+import { AppState } from '../types';
+import HomeIcon from './icons/HomeIcon';
+import DocumentChartBarIcon from './icons/DocumentChartBarIcon';
+import ListBulletIcon from './icons/ListBulletIcon';
+import FlagIcon from './icons/FlagIcon';
+import DocumentMagnifyingGlassIcon from './icons/DocumentMagnifyingGlassIcon';
 import { BrandPortalLogo } from './BrandPortalLogo';
 
 interface NavItem {
@@ -170,3 +170,4 @@ export const SideNav: React.FC<SideNavProps> = ({ activeState, onNavigate, curre
     </nav>
   );
 };
+
