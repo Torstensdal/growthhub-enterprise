@@ -171,3 +171,4 @@ export const SideNav: React.FC<SideNavProps> = ({ activeState, onNavigate, curre
   );
 };
 
+
