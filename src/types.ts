@@ -1,4 +1,4 @@
-export type Language = 'en' | 'da' | 'de';
+﻿export type Language = 'en' | 'da' | 'de';
 
 export type ThemeMode = 'light' | 'dark';
 
@@ -218,4 +218,29 @@ export interface Proposal {
   validUntil: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type NavigationState = 
+  | 'dashboard'
+  | 'onboarding_company_info'
+  | 'onboarding_analysis'
+  | 'onboarding_goals'
+  | 'onboarding_strategy'
+  | 'onboarding_plan'
+  | 'media_library'
+  | 'calendar'
+  | 'partners'
+  | 'prospecting'
+  | 'drip_campaigns'
+  | 'leads'
+  | 'analytics'
+  | 'growth'
+  | 'users'
+  | 'integrations';
+
+export type TeamMemberRole = 'owner' | 'admin' | 'member' | 'viewer';
+
+export interface Company {
+  id: string;
+  name: string;
 }
