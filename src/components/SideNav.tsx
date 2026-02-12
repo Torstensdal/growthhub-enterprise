@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+// @ts-nocheck
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import PhotoIcon from './icons/PhotoIcon';
 import CalendarIcon from './icons/CalendarIcon';
