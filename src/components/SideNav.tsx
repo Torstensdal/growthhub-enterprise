@@ -33,7 +33,7 @@ interface NavGroup {
 }
 
 const navStructure: (NavGroup | NavItem)[] = [
-  { state: 'dashboard', labelKey: 'nav_dashboard', icon: HomeIcon },
+  { state: 'dashboard' as AppState, labelKey: 'nav_dashboard', icon: HomeIcon },
   {
     labelKey: 'nav_onboarding',
     icon: RocketLaunchIcon,
@@ -60,10 +60,10 @@ const navStructure: (NavGroup | NavItem)[] = [
       { state: 'partners', labelKey: 'nav_sales_partners', icon: UsersIcon },
       { state: 'prospecting', labelKey: 'nav_sales_prospecting', icon: DocumentMagnifyingGlassIcon },
       { state: 'drip_campaigns', labelKey: 'nav_sales_drip', icon: PaperAirplaneIcon },
-      { state: 'leads', labelKey: 'nav_sales_leads', icon: InboxIcon },
+      { state: 'leads' as AppState, labelKey: 'nav_sales_leads', icon: InboxIcon },
     ]
   },
-  { state: 'analytics', labelKey: 'nav_analytics', icon: ChartBarIcon },
+  { state: 'analytics' as AppState, labelKey: 'nav_analytics', icon: ChartBarIcon },
   { state: 'growth', labelKey: 'nav_growth', icon: RocketLaunchIcon },
   {
     labelKey: 'nav_settings',
