@@ -1,4 +1,3 @@
-```typescript
 import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
 import { translations } from '../utils/translations';
 import { Language } from '../types';
@@ -83,5 +82,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
-```
