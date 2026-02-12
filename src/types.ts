@@ -1,211 +1,221 @@
-// Core type definitions
 export type Language = 'en' | 'da' | 'de';
-export type Theme = 'light' | 'dark';
 
-// Calendar Event Types
-export type EventType = 'post' | 'meeting' | 'call' | 'task' | 'deadline' | 'follow-up';
-export type EventStatus = 'scheduled' | 'confirmed' | 'pending' | 'completed' | 'cancelled';
-export type SocialPlatform = 'linkedin' | 'facebook' | 'instagram' | 'twitter' | 'tiktok';
+export type ThemeMode = 'light' | 'dark';
+
+export interface CompanyInfo {
+  id: string;
+  name: string;
+  industry: string;
+  size: string;
+  targetAudience: string[];
+  values: string[];
+  mission: string;
+  vision: string;
+  brandVoice: string[];
+  competitors: string[];
+  uniqueSellingPoints: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MediaAsset {
+  id: string;
+  name: string;
+  type: 'image' | 'video' | 'document' | 'logo';
+  url: string;
+  thumbnailUrl?: string;
+  size: number;
+  mimeType: string;
+  tags: string[];
+  category: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface CalendarEvent {
   id: string;
   title: string;
-  date: string; // Format: YYYY-MM-DD
-  time: string; // Format: HH:MM
-  type: EventType;
-  platform?: SocialPlatform;
-  status: EventStatus;
-  description?: string;
-  partnerId?: string;
-}
-
-// Social Post Types
-export interface SocialPost {
-  id: string;
-  platform: SocialPlatform;
-  content: string;
-  scheduledDate: string; // Format: YYYY-MM-DD
-  scheduledTime: string; // Format: HH:MM
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
-  mediaUrls?: string[];
-  hashtags?: string[];
-  analytics?: {
-    reach: number;
-    engagement: number;
-    clicks: number;
-    shares: number;
-  };
-}
-
-// Story Type
-export interface Story {
-  id: string;
-  platform: SocialPlatform;
-  content: string;
-  mediaUrl: string;
-  publishedAt: string;
-  expiresAt: string;
-  views?: number;
-}
-
-// Company & Partner Types
-export interface Company {
-  id: string;
-  name: string;
-  website: string;
-  description?: string;
-  logo?: string;
-  language: Language;
-  partners?: Partner[];
-  createdAt: string;
-  updatedAt: string;
+  description: string;
+  date: Date;
+  endDate?: Date;
+  type: 'meeting' | 'deadline' | 'call' | 'task' | 'event';
+  status: 'pending' | 'completed' | 'cancelled';
+  priority: 'low' | 'medium' | 'high';
+  assignedTo?: string[];
+  relatedTo?: string;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Partner {
   id: string;
   name: string;
+  type: 'agency' | 'freelancer' | 'vendor' | 'affiliate';
   email: string;
   phone?: string;
-  company?: string;
-  role?: string;
-  status: 'active' | 'inactive' | 'pending';
-  revenue?: number;
-  lastContact?: string;
-  type?: 'referral' | 'reseller' | 'integration' | 'affiliate';
-  commission?: number;
+  website?: string;
+  status: 'active' | 'pending' | 'inactive';
+  joinedDate: Date;
+  totalRevenue: number;
+  commissionRate: number;
+  referralCount: number;
   notes?: string;
-  referrals?: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Prospect Types
 export interface Prospect {
   id: string;
   name: string;
+  company: string;
   email: string;
-  company?: string;
   phone?: string;
-  source: string;
   status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
   score: number;
+  source: string;
+  tags: string[];
   notes?: string;
-  createdAt: string;
-  lastContact?: string;
-  industry?: string;
-  contact?: string;
-  painPoints?: string[];
-  budget?: string;
-  timeline?: string;
-  activities?: Activity[];
+  lastContact?: Date;
+  nextFollowUp?: Date;
+  activities: ProspectActivity[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Dashboard Metrics
-export interface DashboardMetrics {
-  totalRevenue: number;
-  activeProspects: number;
-  activePartners: number;
-  socialEngagement: number;
-  revenueChange: number;
-  prospectsChange: number;
-  partnersChange: number;
-  engagementChange: number;
-}
-
-// Activity Feed
-export interface Activity {
+export interface ProspectActivity {
   id: string;
-  type: 'prospect' | 'partner' | 'post' | 'meeting' | 'revenue';
-  title: string;
+  type: 'email' | 'call' | 'meeting' | 'note';
   description: string;
-  timestamp: string;
-  icon?: string;
+  date: Date;
+  userId?: string;
 }
 
-// User Types
+export interface SocialPost {
+  id: string;
+  content: string;
+  platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram';
+  status: 'draft' | 'scheduled' | 'published';
+  scheduledDate?: Date;
+  publishedDate?: Date;
+  hashtags: string[];
+  mediaUrls: string[];
+  metrics?: PostMetrics;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostMetrics {
+  likes: number;
+  shares: number;
+  comments: number;
+  reach: number;
+  engagement: number;
+}
+
+export interface Story {
+  id: string;
+  title: string;
+  slides: StorySlide[];
+  platform: 'instagram' | 'facebook';
+  status: 'draft' | 'scheduled' | 'published';
+  scheduledDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface StorySlide {
+  id: string;
+  type: 'image' | 'video' | 'text';
+  content: string;
+  duration: number;
+  backgroundColor?: string;
+  textColor?: string;
+}
+
+export interface Analytics {
+  id: string;
+  metric: string;
+  value: number;
+  change: number;
+  period: 'day' | 'week' | 'month' | 'year';
+  date: Date;
+}
+
 export interface User {
   id: string;
-  email: string;
   name: string;
-  role: 'admin' | 'user';
-  language: Language;
-  theme: Theme;
+  email: string;
+  role: 'admin' | 'manager' | 'member';
   avatar?: string;
+  status: 'active' | 'inactive';
+  lastLogin?: Date;
+  createdAt: Date;
 }
 
-// API Response Types
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
+export interface DripCampaign {
+  id: string;
+  name: string;
+  description: string;
+  status: 'active' | 'paused' | 'completed';
+  emails: DripEmail[];
+  subscribers: number;
+  openRate: number;
+  clickRate: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Gemini AI Types
-export interface GeminiRequest {
-  prompt: string;
-  context?: string;
-  language?: Language;
-  maxTokens?: number;
+export interface DripEmail {
+  id: string;
+  subject: string;
+  content: string;
+  delayDays: number;
+  sent: number;
+  opened: number;
+  clicked: number;
 }
 
-export interface GeminiResponse {
-  text: string;
-  usage?: {
-    promptTokens: number;
-    completionTokens: number;
-    totalTokens: number;
-  };
-}
-
-// Contact Type
-export interface Contact {
+export interface Lead {
   id: string;
   name: string;
   email: string;
   phone?: string;
   company?: string;
-  position?: string;
-  lastContact?: string;
-  notes?: string;
+  source: string;
+  status: 'new' | 'contacted' | 'qualified' | 'lost';
+  score: number;
+  assignedTo?: string;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Campaign Type
-export interface Campaign {
+export interface Integration {
   id: string;
   name: string;
-  description?: string;
-  status: 'draft' | 'active' | 'paused' | 'completed';
-  startDate: string;
-  endDate?: string;
-  budget?: number;
-  platforms: SocialPlatform[];
-  posts?: SocialPost[];
+  type: 'crm' | 'email' | 'analytics' | 'social' | 'storage';
+  status: 'connected' | 'disconnected' | 'error';
+  provider: string;
+  lastSync?: Date;
+  settings: Record<string, any>;
 }
 
-// Proposal Type
+export interface AppState {
+  companyInfo: CompanyInfo | null;
+  currentUser: User | null;
+  theme: ThemeMode;
+  language: Language;
+  sidebarCollapsed: boolean;
+}
+
 export interface Proposal {
   id: string;
   prospectId: string;
-  title: string;
-  description: string;
-  value: number;
+  content: string;
   status: 'draft' | 'sent' | 'accepted' | 'rejected';
-  createdAt: string;
-  sentAt?: string;
-  respondedAt?: string;
-  content?: string;
-}
-
-// Roadmap Item Type
-export interface RoadmapItem {
-  id: string;
-  title: string;
-  description: string;
-  status: 'planned' | 'in-progress' | 'completed' | 'on-hold';
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  quarter: string; // e.g., "Q1 2026"
-  assignee?: string;
-  progress: number; // 0-100
-  startDate?: string;
-  targetDate?: string;
-  completedDate?: string;
+  value: number;
+  validUntil: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
